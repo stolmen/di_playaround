@@ -1,0 +1,4 @@
+storage:
+  filename: "data.json"
+data:
+  derp: "qwer"

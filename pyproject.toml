@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "di-playaround"
+version = "0.1.0"
+description = ""
+authors = ["stolmen <edward93@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+dependency-injector = {extras = ["yaml"], version = "^4.43.0"}
+requests = "^2.32.3"
+rich = "^13.9.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
