@@ -1,0 +1,5 @@
+{
+    "extends": "pyproject.toml",
+    "venvPath": "/Users/edwardong/Library/Caches/pypoetry/virtualenvs",
+    "venv": "di-playaround-hHq3VU3Y-py3.13"
+}

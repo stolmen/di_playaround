@@ -1,23 +1,17 @@
 from dependency_injector import containers, providers
 from dependency_injector.wiring import Provide, inject
 
-from services import DataService
+from services.render import RenderService
 from container import Container
-
-import rich
-
-# providers - compose these into a container
-
-# whats the difference between a singleton and a factory?
 
 
 @inject
 def print_data(
-    data_service: DataService = Provide[Container.data_service],
+    render_service: RenderService = Provide[Container.render_service],
 ):
-    if data_service.is_stale:
-        data_service.refresh_data()
-    data = data_service.render_data()
+    if render_service.is_stale:
+        render_service.refresh_data()
+    data = render_service.render_data()
     print(data)
 
 

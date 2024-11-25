@@ -1,66 +1,41 @@
-import json
 import statistics
-import sqlite3
-import requests
 
+from rich.console import Console
+from rich.table import Table
 
-def create_http_client():
-    return requests.Session()
-
-
-def create_db_client(db_filename):
-    return sqlite3.connect(db_filename)
-
-
-class JsonFileStorageService:
-    """store data as a JSON file"""
-
-    def __init__(self, filename):
-        self.filename = filename
-
-    def store_data(self, data):
-        with open(self.filename, "w") as f:
-            f.write(json.dumps(data, indent=4))
-
-    def get_data(
-        self,
-    ):
-        with open(self.filename, "r") as f:
-            data = f.read()
-            if not data:
-                raise ValueError("huh, no data?")
-        return json.loads(data)
+from .data_fetch import DataFetchService
+from .storage import StorageService
 
 
 class Skip(Exception):
     pass
 
 
-class DataService:
+class RenderService:
     """Responsible for querying for and storing persisted data"""
 
-    def __init__(self, http_client, storage_service):
-        # self.db_client = db_client
-        self.http_client = http_client
+    def __init__(
+        self, storage_service: StorageService, data_fetch_service: DataFetchService
+    ):
         self.storage_service = storage_service
+        self.data_fetch_service = data_fetch_service
 
     def is_stale(self):
         # query database to check whether the data is stale, or not
         return False  # TODO: implement
 
     def refresh_data(self):
-        bulk_data_url = "http://www.childcarseats.com.au/api/v1/child_car_seats/filter_data/retrieve?_format=json"
-        response = self.http_client.get(bulk_data_url)
-        seats = response.json()["seats"]
-        filtered = [i for i in seats if i["type_ids"] == ["7", "500"]]
+        seats = self.data_fetch_service.list_seats()
         data = []
-        for seat in filtered:
-            fine_data_url = f"http://www.childcarseats.com.au/api/v1/child_car_seats/seat_extra/retrieve/{seat['nid']}"
-            response = self.http_client.get(fine_data_url)
+        for seat in seats:
+            seat_id = seat["nid"]
+            detailed_seat_info = self.data_fetch_service.get_detailed_seat_info(
+                seat_id=seat_id
+            )
             data.append(
                 {
                     "general_info": seat,
-                    "detailed_info": response.json(),
+                    "detailed_info": detailed_seat_info,
                 }
             )
         self.storage_service.store_data(data)
@@ -69,8 +44,6 @@ class DataService:
         # render a table. fields:
         # overall stars, then for each thing
         data = self.storage_service.get_data()
-        from rich.table import Table
-        from rich.console import Console
 
         table = Table(title="Seats")
         table.add_column("name")
