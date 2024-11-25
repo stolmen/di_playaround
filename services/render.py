@@ -3,7 +3,7 @@ import statistics
 from rich.console import Console
 from rich.table import Table
 
-from .data_fetch import DataFetchService
+from .data_fetch import DataFetchServiceHttp
 from .storage import StorageService
 
 
@@ -12,10 +12,10 @@ class Skip(Exception):
 
 
 class RenderService:
-    """Responsible for querying for and storing persisted data"""
+    """Responsible for rendering fetched data"""
 
     def __init__(
-        self, storage_service: StorageService, data_fetch_service: DataFetchService
+        self, storage_service: StorageService, data_fetch_service: DataFetchServiceHttp
     ):
         self.storage_service = storage_service
         self.data_fetch_service = data_fetch_service

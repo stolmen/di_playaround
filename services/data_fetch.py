@@ -1,4 +1,27 @@
+# class DataFetchService:
+
+
 class DataFetchService:
+    """Fetches seat data"""
+
+    def list_seats(self):
+        raise NotImplementedError
+
+    def get_detailed_seat_info(self, seat_id):
+        raise NotImplementedError
+
+
+class DataFetchServiceFake(DataFetchService):
+    """Fetches some seat data"""
+
+    def list_seats(self):
+        return []
+
+    def get_detailed_seat_info(self, seat_id):
+        return {}
+
+
+class DataFetchServiceHttp(DataFetchService):
     """Fetches seat data"""
 
     def __init__(self, http_client):

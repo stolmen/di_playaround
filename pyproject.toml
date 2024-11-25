@@ -3,7 +3,6 @@ name = "di-playaround"
 version = "0.1.0"
 description = ""
 authors = ["stolmen <edward93@gmail.com>"]
-readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -13,10 +12,10 @@ rich = "^13.9.4"
 pytest = "^8.3.3"
 
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
+# [build-system]
+# requires = ["poetry-core"]
+# build-backend = "poetry.core.masonry.api"
+#
 [tool.pyright]
 exclude = ["**/__pycache__", "./venv", ".pytest_cache"]
 extraPaths = ["common/lib"]

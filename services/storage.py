@@ -9,6 +9,17 @@ class StorageService:
         raise NotImplementedError
 
 
+class MemoryStorageService(StorageService):
+    def __init__(self):
+        self._data = None
+
+    def store_data(self, data):
+        self._data = data
+
+    def get_data(self):
+        return self._data
+
+
 class JsonFileStorageService(StorageService):
     """store data as a JSON file"""
 
